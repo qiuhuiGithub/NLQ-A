@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-6-openjdk-amd64">
+		<attributes>
+			<attribute name="owner.project.facets" value="java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.web"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="/home/qiuhui/mysql-connector-java-5.1.0-bin.jar"/>
+	<classpathentry kind="lib" path="/home/qiuhui/gStore-master/api/java/lib/GstoreJavaAPI.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/edu.mit.jwi_2.1.4.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/edu.mit.jwi_2.4.0_jdk.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/edu.sussex.nlp.jws.beta.11.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/ejml-0.23.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/stanford-parser.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/stanford-parser-3.3.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/stanford-parser-3.3.1-models.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/referenced/stanford-parser-3.3.1-sources.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/ejml-0.23.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/joda-time.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/joda-time-2.1-sources.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/jollyday.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/jollyday-0.4.7-sources.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/stanford-corenlp-3.3.1.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/stanford-corenlp-3.3.1-javadoc.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/stanford-corenlp-3.3.1-models.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/stanford-corenlp-3.3.1-sources.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/xom.jar"/>
+	<classpathentry kind="lib" path="/media/qiuhui/000D5D49000D9188/stanford-corenlp-full-2014-01-04/xom-1.2.10-src.jar"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
