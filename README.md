@@ -34,7 +34,7 @@ actor	 play_in	 Philadelphia
 谓语支持集	marryTo, get_marriedTo, wedTo, playIn,<br>
 宾语支持集	actor, histrion, player, Philadelphia, City_of_Brotherly_Love,<br>
 sparql语句列表<br>
-select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result><s>actor>. ?y <<result>ub:playIn> <<result>Philadelphia>. }     
+select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>actor>. ?y <<result>ub:playIn> <<result>Philadelphia>. }     
 select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>actor>. ?y <<result>ub:playIn> <<result>City_of_Brotherly_Love>. }   
 select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>histrion>. ?y <<result>ub:playIn> <<result>Philadelphia>. }      
 select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>histrion>. ?y <<result>ub:playIn> <<result>City_of_Brotherly_Love>. }    
