@@ -13,23 +13,19 @@
 
 用户可以输入SPARQL语句进行查询，目前只支持select语句。
 例如当我们输入一个SPARQL查询语句：“select ?x where {	?x <ub:capitalOf>	<ub:China>.}”，客户端的结果如下所示：<br>
-result<br>
-There has answer: 1<br>
-<<result>Beijing><br>
+result   
+There has answer: 1   
+<<result>Beijing><br>   
 
 2.2自然语言查询
 
 我们首先把自然语言转换成SPARQL，然后利用SPARQL进行查询。我们将输出我们提取出的三元组、三元组中词汇消歧后的结果以及构造出来的SPARQL语句。我们对每一个转换成的SPARQL给定了一个分数，返回分数最高的那个SPARQL的查询结果。
 例如当我们输入一个问句：“Who was married to an actor that play in Philadelphia?”，客户端的结果如下所示：
 
-关系列表
-
-主语列表	谓语列表	宾语列表
-
-Who	married_to	actor
-
-actor	play_in	Philadelphia
-
+关系列表   
+主语列表	谓语列表	宾语列表   
+Who	married_to	actor   
+actor	play_in	Philadelphia   
 
 支持集列表<br>
 主语支持集	Who, actor, histrion, player,<br>
