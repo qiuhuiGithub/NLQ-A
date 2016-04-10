@@ -12,7 +12,7 @@
 2.1SPARQL查询
 
 用户可以输入SPARQL语句进行查询，目前只支持select语句。
-例如当我们输入一个SPARQL查询语句：“select ?x where {	?x　<　ub:capitalOf>	<　ub:China>　.}”，客户端的结果如下所示：<br>
+例如当我们输入一个SPARQL查询语句：“select ?x where {	?x　<<s>ub:capitalOf>	<<s>ub:China>　.}”，客户端的结果如下所示：<br>
 result   
 There has answer: 1   
 <<result>Beijing><br>   
@@ -32,16 +32,16 @@ actor	 play_in	 Philadelphia
 谓语支持集	marryTo, get_marriedTo, wedTo, playIn,<br>
 宾语支持集	actor, histrion, player, Philadelphia, City_of_Brotherly_Love,<br>
 sparql语句列表<br>
-select ?x where{ ?x <　ub:marryTo> ?y. ?y <　rdf:type> < actor>. ?y <　ub:playIn> <　Philadelphia>. }  
-select ?x where{ ?x <　ub:marryTo> ?y. ?y <　rdf:type> < actor>. ?y <　ub:playIn> <　City_of_Brotherly_Love>. }  
-select ?x where{ ?x <　ub:marryTo> ?y. ?y <　rdf:type> < histrion>. ?y <　ub:playIn> <　Philadelphia>. }   
-select ?x where{ ?x <　ub:marryTo> ?y. ?y <　rdf:type> < histrion>. ?y <　ub:playIn> <　City_of_Brotherly_Love>. }   
-select ?x where{ ?x <　ub:marryTo> ?y. ?y <　rdf:type> < player>. ?y <　ub:playIn> <　Philadelphia>. }   
-select ?x where{ ?x <　ub:marryTo> ?y. ?y <　rdf:type> < player>. ?y <　ub:playIn> <　City_of_Brotherly_Love>. }   
-select ?x where{ ?x <　ub:get_marriedTo> ?y. ?y <　rdf:type> < actor>. ?y <　ub:playIn> <　Philadelphia>. }   
-select ?x where{ ?x <　ub:get_marriedTo> ?y. ?y <　rdf:type> < actor>. ?y <　ub:playIn> <　City_of_Brotherly_Love>. }   
-select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> < histrion>. ?y <ub:playIn> <Philadelphia>. }   
-select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> < histrion>. ?y <ub:playIn> <City_of_Brotherly_Love>. }<br>   
+select ?x where{ ?x <<s>ub:marryTo> ?y. ?y <<s>rdf:type> <<s><s>actor>. ?y <<s>ub:playIn> <<s>Philadelphia>. }  
+select ?x where{ ?x <<s>ub:marryTo> ?y. ?y <<s>rdf:type> <<s>actor>. ?y <<s>ub:playIn> <<s>City_of_Brotherly_Love>. }  
+select ?x where{ ?x <<s>ub:marryTo> ?y. ?y <<s>rdf:type> <<s>histrion>. ?y <<s>ub:playIn> <<s>Philadelphia>. }   
+select ?x where{ ?x <<s>ub:marryTo> ?y. ?y <<s>rdf:type> <<s>histrion>. ?y <<s>ub:playIn> <<s>City_of_Brotherly_Love>. }   
+select ?x where{ ?x <<s>ub:marryTo> ?y. ?y <<s>rdf:type> <<s>player>. ?y <<s>ub:playIn> <<s>Philadelphia>. }   
+select ?x where{ ?x <<s>ub:marryTo> ?y. ?y <<s>rdf:type> <<s>player>. ?y <<s>ub:playIn> <<s>City_of_Brotherly_Love>. }   
+select ?x where{ ?x <<s>ub:get_marriedTo> ?y. ?y <<s>rdf:type> <<s>actor>. ?y <<s>ub:playIn> <<s>Philadelphia>. }   
+select ?x where{ ?x <<s>ub:get_marriedTo> ?y. ?y <<s>rdf:type> <<s>actor>. ?y <<s>ub:playIn> <<s>City_of_Brotherly_Love>. }   
+select ?x where{ ?x <<s>ub:get_marriedTo> ?y. ?y <<s>rdf:type> <<s>histrion>. ?y <<s>ub:playIn> <<s>Philadelphia>. }   
+select ?x where{ ?x <<s>ub:get_marriedTo> ?y. ?y <<s>rdf:type> <<s>histrion>. ?y <<s>ub:playIn> <<s>City_of_Brotherly_Love>. }<br>   
 2.3关键词查询>
 
 under construction...
