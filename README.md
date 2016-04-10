@@ -24,24 +24,24 @@ There has answer: 1
 
 关系列表   
 主语列表	谓语列表	宾语列表   
-Who	married_to	actor   
-actor	play_in	Philadelphia   
+Who	 married_to	 actor   
+actor	 play_in	 Philadelphia   
 
 支持集列表<br>
 主语支持集	Who, actor, histrion, player,<br>
 谓语支持集	marryTo, get_marriedTo, wedTo, playIn,<br>
 宾语支持集	actor, histrion, player, Philadelphia, City_of_Brotherly_Love,<br>
 sparql语句列表<br>
-select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> <actor>. ?y <ub:playIn> <Philadelphia>. }  
-select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> <actor>. ?y <ub:playIn> <City_of_Brotherly_Love>. }  
-select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> <histrion>. ?y <ub:playIn> <Philadelphia>. }   
-select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> <histrion>. ?y <ub:playIn> <City_of_Brotherly_Love>. }   
-select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> <player>. ?y <ub:playIn> <Philadelphia>. }   
-select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> <player>. ?y <ub:playIn> <City_of_Brotherly_Love>. }   
-select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> <actor>. ?y <ub:playIn> <Philadelphia>. }   
-select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> <actor>. ?y <ub:playIn> <City_of_Brotherly_Love>. }   
-select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> <histrion>. ?y <ub:playIn> <Philadelphia>. }   
-select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> <histrion>. ?y <ub:playIn> <City_of_Brotherly_Love>. }<br>   
+select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> < actor>. ?y <ub:playIn> <Philadelphia>. }  
+select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> < actor>. ?y <ub:playIn> <City_of_Brotherly_Love>. }  
+select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> < histrion>. ?y <ub:playIn> <Philadelphia>. }   
+select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> < histrion>. ?y <ub:playIn> <City_of_Brotherly_Love>. }   
+select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> < player>. ?y <ub:playIn> <Philadelphia>. }   
+select ?x where{ ?x <ub:marryTo> ?y. ?y <rdf:type> < player>. ?y <ub:playIn> <City_of_Brotherly_Love>. }   
+select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> < actor>. ?y <ub:playIn> <Philadelphia>. }   
+select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> < actor>. ?y <ub:playIn> <City_of_Brotherly_Love>. }   
+select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> < histrion>. ?y <ub:playIn> <Philadelphia>. }   
+select ?x where{ ?x <ub:get_marriedTo> ?y. ?y <rdf:type> < histrion>. ?y <ub:playIn> <City_of_Brotherly_Love>. }<br>   
 2.3关键词查询>
 
 under construction...
