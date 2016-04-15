@@ -60,9 +60,9 @@ sparql语句：<s:property value="sparqlString" />
 		<tr>
 			<th  colspan= "3" align = "center">sparql语句列表</th>
 		</tr>
-		 <s:iterator value="sparqlList" id = "sparql">
+		<s:iterator value="sorted_map" id="column">
 			<tr>
-				<td><s:property value="sparql" /></td>
+				<td><s:property value="key" />&nbsp;&nbsp;&nbsp;<s:property value="value" /></td>
 			</tr>
 	   </s:iterator>
 </table>

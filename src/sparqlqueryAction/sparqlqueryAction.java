@@ -8,15 +8,24 @@ import com.opensymphony.xwork2.ActionSupport;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 import java.io.StringReader;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import javax.swing.text.html.HTMLDocument.Iterator;
+
+import sun.rmi.runtime.Log;
+import sparqlqueryAction.ValueComparator;
 
 import javabean.MyTriples;
 import javabean.GlobalVariable;
@@ -44,9 +53,23 @@ import edu.stanford.nlp.pipeline.*;
 import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.ling.*; 
 import edu.stanford.nlp.ling.CoreAnnotations.*; 
+import edu.sussex.nlp.jws.AdaptedLesk;
+import edu.sussex.nlp.jws.AdaptedLeskTanimoto;
+import edu.sussex.nlp.jws.AdaptedLeskTanimotoNoHyponyms;
+import edu.sussex.nlp.jws.HirstAndStOnge;
+import edu.sussex.nlp.jws.JWS;
+import edu.sussex.nlp.jws.JiangAndConrath;
+import edu.sussex.nlp.jws.LeacockAndChodorow;
+import edu.sussex.nlp.jws.Lin;
+import edu.sussex.nlp.jws.Path;
+import edu.sussex.nlp.jws.Resnik;
+import edu.sussex.nlp.jws.WuAndPalmer;
 
 @SuppressWarnings("serial")
 public class sparqlqueryAction extends ActionSupport {
+	 private static String dir = "/usr/local/WordNet-3.0";
+     private static JWS    ws = new JWS(dir, "3.0");
+     
 	private static int tdlSize = 0;
     private static int i1 = 0;
 	private static boolean turnFlag = false;
@@ -69,6 +92,14 @@ public class sparqlqueryAction extends ActionSupport {
 	private int queryType;
 	private String answer;
 	private String answerNumber;
+	
+	private static List<Double>  subScore = new ArrayList<Double>();
+	private static List<Double> relScore = new ArrayList<Double>() ;
+	private static List<Double> objScore = new ArrayList<Double>();
+	private static List<Double> sparqlScore = new ArrayList<Double>();
+	Map<String,Double> scoreOfsparql = new LinkedHashMap<String,Double>();
+	ValueComparator bvc =  new ValueComparator(scoreOfsparql);  
+	TreeMap<String,Double> sorted_map = new TreeMap<String,Double>(bvc);  
 
 	public String execute(){
 		System.out.println(queryType);
@@ -164,6 +195,7 @@ public class sparqlqueryAction extends ActionSupport {
 	       String lemma;
 	       if(supportSize==1){
 	    	   subSupportList.add(subEntityList.get(0));
+	    	   subScore.add(1.0);
 	    	   relCandi = relationList.get(0);
 	    	   String tmp1  = relCandi;
 	     	  if(relCandi.charAt(relCandi.length()-3)=='_'){
@@ -187,36 +219,71 @@ public class sparqlqueryAction extends ActionSupport {
 	        			relPrepList.add(rel);
 	        		}
 	        	}
+	     	  System.out.println(lemma+""+relSupportList.get(0));
+	     	 System.out.println("wocao");
+	     	  for(int index = 0;index<relSupportList.size();index++){
+	     		  double score = getSimilarity(lemma,relSupportList.get(index))*Math.pow(0.9, index);
+	     		  relScore.add(score);
+	     	  }
+	     	 for(int index = 0;index<relSupportList.size();index++){
+	  
+	     		  System.out.print(relScore.get(index));
+	     	  }
 	        		 getSynonyms(dict,objEntityList.get(0),3); //testing
 	        	     getHypernyms(dict);//testing
+	        	     for(int index = 0;index<objSupportList.size();index++){
+	   	     		  double score = getSimilarity(objEntityList.get(0),objSupportList.get(index))*Math.pow(0.9, index);
+	   	     		System.out.print(score);
+	   	     		  objScore.add(score);   	     		
+	   	     	  }
 	        	  //  ArrayList<String> sparqlList = new ArrayList<String>();
 	        	       int relLen = relPrepList.size();
 	        	       int objLen = objSupportList.size();
 	        	       String rel1,obj1;
+	        	       double alpha;
+	        	       double max = 0.4,min = 0.3;
+	        	       Random random = new Random();
+	        	       alpha = random.nextDouble()%(max-min) + min;
 	        	       for(int i =0;i<relLen;i++) {
 	        	    	   for(int j =0;j<objLen;j++) {
 	        	    		   //map2.put(relSupportList.get(i), map.get(relSupportList.get(i)));
 	        	    		   rel1 ="<ub:"+relPrepList.get(i)+">";
 	        	    		   obj1 = "<"+objSupportList.get(j)+">.";
 	        	    		   String sparql = "select ?x where { "+"?x  " +rel1+"  "+obj1+"  }";
+	        	    		   double score1  =alpha*relScore.get(i)+(1-alpha)*objScore.get(j);
+	        	    		   sparqlScore.add(score1);
 	        	    		   sparqlList.add(sparql);
+	        	    		   scoreOfsparql.put(sparql, score1);
 	        	    	   }
 	        	       }
-	        	       for(java.util.Iterator<String> k = sparqlList.iterator();k.hasNext(); ){
+	        	       sorted_map.putAll(scoreOfsparql);  
+	        	      /* for(java.util.Iterator<String> k = sparqlList.iterator();k.hasNext(); ){
 	        	        	String str = k.next();
 	        	        	System.out.println(str);
 	        	     }
+	        	       for(java.util.Iterator<Double> k = sparqlScore.iterator();k.hasNext(); ){
+	        	        	double str = k.next();
+	        	        	System.out.println(str);
+	        	     }*/
+	        	       System.out.println( sorted_map);
+	        	       
 	       }else{
+	    	   double alpha;
+		       double max = 0.4,min = 0.3;
+		       Random random = new Random();
+		       alpha = random.nextDouble()%(max-min) + min;
 	      for(int i0 = 0;i0<supportSize;i0++){
 	    	  subCandi = subEntityList.get(i0);
 	    	  relCandi = relationList.get(i0);
 	    	  objCandi = objEntityList.get(i0);
-    	  
+	    	  
+		       
+		       
 	    	  String tmp  = relCandi;
 	    	  if(relCandi.charAt(relCandi.length()-3)=='_'){
 	       		relCandi = relCandi.substring(0,relCandi.length()-3);
 	       		lemma = lemmatization(relCandi);
-	       	System.out.println(relCandi);
+	       	   System.out.println(relCandi);
 	       		getSynonyms(dict,lemma,2); //testing
 	       		getHypernyms(dict);//testing
 	       		String rel;
@@ -242,11 +309,13 @@ public class sparqlqueryAction extends ActionSupport {
 	      int relLen = relPrepList.size();
 	      int objLen = objSupportList.size();
 	      String rel,obj;
+
 	      if(i0==0){
 	    	  for(int i =0;i<relLen;i++) {
 	    		  rel = "<ub:"+relPrepList.get(i)+">";
 	    		  String supTriple1 ="?x  "+ rel +"  "+"?y.  ";
 	    		  supTripleList1.add(supTriple1);
+	    		  subScore.add(getSimilarity(relSupportList.get(i),lemma)*Math.pow(0.9, i));
 	    	  }
 	    	  for(int j =0;j<objLen;j++) {
 	    		  //map2.put(relSupportList.get(i), map.get(relSupportList.get(i)));
@@ -254,6 +323,7 @@ public class sparqlqueryAction extends ActionSupport {
 	    		  String supTriple2 ="?y  "+"<rdf:type>  "+obj;
 	    		  //  String sparql = "select ?x where { "+"?x  " +rel+"  "+obj+"  }";
 	    		  supTripleList2.add(supTriple2);
+	    		  relScore.add(getSimilarity(objSupportList.get(j),objCandi)*Math.pow(0.9, j));
 	    	  }
 	      }else{
 	    	  for(int i =0;i<relLen;i++) {
@@ -263,6 +333,7 @@ public class sparqlqueryAction extends ActionSupport {
 	       		   obj = "<"+objSupportList.get(j)+">";
 	       		   String supTriple = "?y  "+rel+"  "+obj+". ";
 	       		   supTripleList3.add(supTriple);
+	       		   objScore.add(alpha*getSimilarity(relSupportList.get(i),lemma)*Math.pow(0.9, i)+(1-alpha)*getSimilarity(objSupportList.get(j),objCandi)*Math.pow(0.9, j));
 	       	   }
 	          }
 	      }
@@ -283,22 +354,51 @@ public class sparqlqueryAction extends ActionSupport {
 	      System.out.println(relCloneList);
 	      System.out.println(objCloneList);
 	      //ArrayList<String> sparqlList = new ArrayList<String>();
+
 	      for(int i = 0;i<supTripleList1.size();i++){
 	    	  for(int j =0;j<supTripleList2.size();j++){
 	    		  for(int k = 0;k<supTripleList3.size();k++){
 	    			  String sparql = "select ?x where{ "+supTripleList1.get(i)+supTripleList2.get(j)+supTripleList3.get(k)+" }";
+	    			  double score1  = alpha*subScore.get(i)+(1-alpha)*relScore.get(j)+objScore.get(k);
 	    			  sparqlList.add(sparql);
+	    			  scoreOfsparql.put(sparql, score1);
 	    		  }
 	    	  }
 	      }
-	      	for(java.util.Iterator<String> k = sparqlList.iterator();k.hasNext(); ){
-	      	String str = k.next();
-	      	System.out.println(str);
-	      	}
+	      sorted_map.putAll(scoreOfsparql);  
+	      System.out.println(sorted_map);
 	       }
 	}
 
-	 private String lemmatization(String text) {
+	 
+
+	private double getSimilarity(String str1, String str2) {
+		// TODO Auto-generated method stub
+		 String[] strs1 = splitString(str1);
+         String[] strs2 = splitString(str2);
+         double sum = 0.0;
+         for(String s1 : strs1){
+             for(String s2: strs2){
+                 //double sc= maxScoreOfLin(s1,s2); //mark
+            	 //double sc= maxScoreOfJcn(s1,s2);//mark
+            	 //double sc= maxScoreOfLesk(s1,s2);//no answer
+            	 //double sc= maxScoreOfTanimoto(s1,s2);//no answer
+            	 //double sc= maxScoreOfHas(s1,s2);//mark
+            	//double sc= maxScoreOfLcd(s1,s2);//mark
+            	 double sc = maxScoreOfPath(s1,s2);//mark,tending to choose this
+            	 //double sc = maxScoreOfRes(s1,s2);//mark
+            	 //double sc = maxScoreOfWpm(s1,s2);//mark
+            	 //double sc = maxScoreOfTnh(s1,s2);//no answer
+                 sum+= sc;
+                 System.out.println("当前计算: "+s1+" VS "+s2+" 的相似度为:"+sc);
+             }
+         }
+         double Similarity = sum /(strs1.length * strs2.length);
+         sum=0;
+         return Similarity;
+	}
+
+	private String lemmatization(String text) {
 		// TODO Auto-generated method stub
 		// TODO Auto-generated method stub
 		 Properties props = new Properties(); 
@@ -344,6 +444,41 @@ public class sparqlqueryAction extends ActionSupport {
 	        	int wordCount2 = idxWord2.getWordIDs().size();
 	        	idxWord = wordCount1>wordCount2?idxWord1:idxWord2;
 	    	}
+	    	/* System.out.println(idxWord.getWordIDs().size());
+	         int nodeWidth = idxWord.getWordIDs().size();
+	         int matchLen = nodeWidth>3?3:nodeWidth;
+	         //List<String> list = new ArrayList<String>();
+	         for(int in =0;in<matchLen;in++){
+	      	   IWordID wordID = idxWord.getWordIDs().get(in) ; // 1st meaning
+	             IWord word = dict.getWord(wordID);
+	             ISynset synset = word.getSynset (); //ISynset是一个词的同义词集的接口
+
+	             if(type ==1) {
+	            	 if(!subSupportList.contains(synset.getWords().get(0).getLemma())&&!subSupportList.contains(change(synset.getWords().get(0).getLemma()))){
+	            		 subSupportList.add(synset.getWords().get(0).getLemma());
+	    	             }else{
+	    	            	 if(synset.getWords().size()>1)
+	    	            	 subSupportList.add(synset.getWords().get(1).getLemma());
+	    	             }
+		             }else if(type==2){
+		            	 if(!relSupportList.contains(synset.getWords().get(0).getLemma())&&!relSupportList.contains(change(synset.getWords().get(0).getLemma()))){
+		            		 relSupportList.add(synset.getWords().get(0).getLemma());
+		    	             }else{
+		    	            	 if(synset.getWords().size()>1)
+		    	            	 relSupportList.add(synset.getWords().get(1).getLemma());
+		    	             }
+		             }else{
+		            	 if(!objSupportList.contains(synset.getWords().get(0).getLemma())&&!objSupportList.contains(change(synset.getWords().get(0).getLemma()))){
+		            		 objSupportList.add(synset.getWords().get(0).getLemma());
+		    	             }else{
+		    	            	 if(synset.getWords().size()>1)
+		    	            	 objSupportList.add(synset.getWords().get(1).getLemma());
+		    	             }
+		             }
+	         System.out.println(subSupportList);
+	         System.out.println(relSupportList);
+	         System.out.println(objSupportList);
+	      }*/
 	        IWordID wordID = idxWord.getWordIDs().get(0) ; // 1st meaning
 	        IWord word = dict.getWord(wordID);
 	        ISynset synset = word.getSynset (); //ISynset是一个词的同义词集的接口
@@ -375,13 +510,23 @@ public class sparqlqueryAction extends ActionSupport {
 	        }
 	       
 	        // iterate over words associated with the synset
-	       /* for(IWord w : synset.getWords()) {
+	        for(IWord w : synset.getWords()) {
 	        	 System.out.println(w.getLemma());//打印同义词集中的每个同义词
 	        	 nodeWidth++;
-	        }*/
+	        }
 	        
 	        System.out.println("nodeWidth"+" "+nodeWidth);
 	     }
+	
+	private String change(String s){
+		String ss;
+		if(s.charAt(0)>='a'&&s.charAt(0)<='z'){
+			ss = s.substring(0,1).toUpperCase()+s.substring(1,s.length());
+		}else{
+			ss = s.substring(0,1).toLowerCase()+s.substring(1,s.length());
+		}
+		return ss;
+	}
 	    //���
 	    private void getHypernyms(IDictionary dict){
 	    	 
@@ -620,7 +765,102 @@ public class sparqlqueryAction extends ActionSupport {
 			}
 		 }
 	 }
-	
+     private   String[] splitString(String str){
+         String[] ret = str.split(" ");
+         return ret;
+     }
+     //1.Lin
+     private  double maxScoreOfLin(String str1,String str2){
+         Lin lin = ws.getLin();
+         double sc = lin.max(str1, str2, "n");
+         if(sc==0){
+             sc = lin.max(str1, str2, "v");
+         }
+         return sc;
+     }
+     //2.Jcn
+     private  double maxScoreOfJcn(String str1,String str2){
+    	 JiangAndConrath jcn = ws.getJiangAndConrath();
+         double sc = jcn.max(str1, str2, "n");
+         if(sc==0){
+             sc = jcn.max(str1, str2, "v");
+         }
+         return sc;
+     }
+     //3.Lesk
+     private  double maxScoreOfLesk(String str1,String str2) {
+    	  AdaptedLesk lesk = ws.getAdaptedLesk();
+    	  double sc = lesk.max(str1, str2, "n");
+    	  if(sc == 0 ){
+    		  sc = lesk.max(str1, str2, "v");
+    	  }
+    	  return sc;
+     }
+     //4.Tanimoto
+     private  double maxScoreOfTanimoto(String str1,String str2) {
+   	  AdaptedLeskTanimoto tanimoto = ws.getAdaptedLeskTanimoto();
+   	  double sc = tanimoto.max(str1, str2, "n");
+   	  if(sc == 0 ){
+   		  sc = tanimoto.max(str1, str2, "v");
+   	  }
+   	  return sc;
+    }
+     //5.Has
+     private  double maxScoreOfHas(String str1,String str2) {
+    	 HirstAndStOnge has = ws.getHirstAndStOnge();
+      	  double sc = has.max(str1, str2, "n");
+      	  if(sc == 0 ){
+      		  sc = has.max(str1, str2, "v");
+      	  }
+      	  return sc;
+       }
+     //6.Lcd
+     private  double maxScoreOfLcd(String str1,String str2) {
+    	 LeacockAndChodorow lcd = ws.getLeacockAndChodorow();
+      	  double sc = lcd.max(str1, str2, "n");
+      	  if(sc == 0 ){
+      		  sc = lcd.max(str1, str2, "v");
+      	  }
+      	  return sc;
+       }
+     //7.Path
+     private double maxScoreOfPath(String str1,String str2) {
+    	   Path path = ws.getPath();
+      	  double sc = path.max(str1, str2, "n");
+      	  if(sc == 0 ){
+      		  sc = path.max(str1, str2, "v");
+      	  }
+      	  return sc;
+       }
+     //8.Res
+     private  double maxScoreOfRes(String str1,String str2) {
+  	   Resnik res = ws.getResnik();
+    	  double sc = res.max(str1, str2, "n");
+    	  if(sc == 0 ){
+    		  sc = res.max(str1, str2, "v");
+    	  }
+    	  return sc;
+     }
+     //9.Wpm
+     private  double maxScoreOfWpm(String str1,String str2) {
+    	   WuAndPalmer wpm = ws.getWuAndPalmer();
+      	  double sc = wpm.max(str1, str2, "n");
+      	  if(sc == 0 ){
+      		  sc = wpm.max(str1, str2, "v");
+      	  }
+      	  return sc;
+       }
+     //10.Tnh
+     private  double maxScoreOfTnh(String str1,String str2) {
+  	    AdaptedLeskTanimotoNoHyponyms tanimoto = ws.getAdaptedLeskTanimotoNoHyponyms();
+    	  double sc = tanimoto.max(str1, str2, "n");
+    	  if(sc == 0 ){
+    		  sc = tanimoto.max(str1, str2, "v");
+    	  }
+    	  return sc;
+     }
+     /***********计算相似性*********************** */
+     
 	/*Getters and Setters*/
 	public String getSparqlString() {
 		return sparqlString;
@@ -688,6 +928,30 @@ public class sparqlqueryAction extends ActionSupport {
 
 	public void setRelPrepList(List<String> relPrepList) {
 		this.relPrepList = relPrepList;
+	}
+
+	public static List<Double> getSparqlScore() {
+		return sparqlScore;
+	}
+
+	public static void setSparqlScore(List<Double> sparqlScore) {
+		sparqlqueryAction.sparqlScore = sparqlScore;
+	}
+
+	public Map<String, Double> getScoreOfsparql() {
+		return scoreOfsparql;
+	}
+
+	public void setScoreOfsparql(Map<String, Double> scoreOfsparql) {
+		this.scoreOfsparql = scoreOfsparql;
+	}
+
+	public TreeMap<String, Double> getSorted_map() {
+		return sorted_map;
+	}
+
+	public void setSorted_map(TreeMap<String, Double> sorted_map) {
+		this.sorted_map = sorted_map;
 	}
 	
 	
