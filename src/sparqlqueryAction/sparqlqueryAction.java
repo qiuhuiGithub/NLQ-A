@@ -1,7 +1,7 @@
 package sparqlqueryAction;
 import jgsc.GstoreConnector;
-import   java.io.*;
-import  java.util.*;
+import java.io.*;
+import java.util.*;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
@@ -68,11 +68,11 @@ import edu.sussex.nlp.jws.WuAndPalmer;
 
 @SuppressWarnings("serial")
 public class sparqlqueryAction extends ActionSupport {
-	 private static String dir = "/usr/local/WordNet-3.0";
-     private static JWS    ws = new JWS(dir, "3.0");
+	private static String dir = "/usr/local/WordNet-3.0";
+     	private static JWS    ws = new JWS(dir, "3.0");
      
 	private static int tdlSize = 0;
-    private static int i1 = 0;
+    	private static int i1 = 0;
 	private static boolean turnFlag = false;
 	private static boolean containNn = false;
 	private static List<String> subEntityList = new ArrayList<String>();
@@ -83,7 +83,7 @@ public class sparqlqueryAction extends ActionSupport {
 	private  List<String> relSupportList = new ArrayList<String>();
 	private  List<String> objSupportList = new ArrayList<String>();
 	private  List<String> relPrepList = new ArrayList<String>(); 
-    private ArrayList<String> sparqlList = new ArrayList<String>();
+    	private ArrayList<String> sparqlList = new ArrayList<String>();
 	
 	private static List<TreeGraphNode> subnnList = new ArrayList<TreeGraphNode>();
 	private static List<TreeGraphNode> objnnList = new ArrayList<TreeGraphNode>();
@@ -166,7 +166,7 @@ public class sparqlqueryAction extends ActionSupport {
 	private void init() {
 		// TODO Auto-generated method stub
 		tdlSize = 0;
-	    i1 = 0;
+	    	i1 = 0;
 		turnFlag = false;
 		containNn = false;
 		subEntityList.clear();
@@ -176,15 +176,15 @@ public class sparqlqueryAction extends ActionSupport {
 		relSupportList.clear();
 		objSupportList.clear();
 		relPrepList.clear();
-	    sparqlList.clear();
+	    	sparqlList.clear();
 		subnnList.clear();
 		objnnList .clear();
-		 tripleList.clear();
+		tripleList.clear();
 	}
 
 	private void generateSparql()  throws IOException{
 		// TODO Auto-generated method stub
-		 String wnhome = System.getenv("WNHOME"); //获取WordNet根目录环境变量WNHOME
+	       String wnhome = System.getenv("WNHOME"); //获取WordNet根目录环境变量WNHOME
 	       String path = wnhome + File.separator+ "dict";       
 	       File wnDir=new File(path);
 	       URL url=new URL("file", null, path);
@@ -225,6 +225,7 @@ public class sparqlqueryAction extends ActionSupport {
 	        			relPrepList.add(rel);
 	        		}
 	        	}
+<<<<<<< HEAD
 	     	 System.out.println(relPrepList);
 	     	 System.out.println(lemma+""+relSupportList.get(0));
 	     	 System.out.println("wocao");
@@ -255,6 +256,34 @@ public class sparqlqueryAction extends ActionSupport {
 	        	       for(int i =0;i<relLen;i++) {
 	        	    	   for(int j =0;j<objLen;j++) {
 	        	    		   //map2.put(relSupportList.get(i), map.get(relSupportList.get(i)));
+=======
+	     	System.out.println(lemma+""+relSupportList.get(0));
+	     	System.out.println("wocao");
+	     	for(int index = 0;index<relSupportList.size();index++){
+	     	  double score = getSimilarity(lemma,relSupportList.get(index))*Math.pow(0.9, index);
+	     	  relScore.add(score);
+	     	}
+	     	for(int index = 0;index<relSupportList.size();index++){
+	     	  System.out.print(relScore.get(index));
+	     	}
+	        getSynonyms(dict,objEntityList.get(0),3); //testing
+	        getHypernyms(dict);//testing
+	        for(int index = 0;index<objSupportList.size();index++){
+	      	   double score = getSimilarity(objEntityList.get(0),objSupportList.get(index))*Math.pow(0.9, index);
+	   	   System.out.print(score);
+	   	   objScore.add(score);   	     		
+	   	}
+		 //  ArrayList<String> sparqlList = new ArrayList<String>();
+	        int relLen = relPrepList.size();
+	        int objLen = objSupportList.size();
+	        String rel1,obj1;
+	        double alpha;
+	        double max = 0.4,min = 0.3;
+	        Random random = new Random();
+	        alpha = random.nextDouble()%(max-min) + min;
+	        for(int i =0;i<relLen;i++) {
+	            		for(int j =0;j<objLen;j++) {
+>>>>>>> f8b36cc4357c571ce803b0188e01450d294bf96a
 	        	    		   rel1 ="<ub:"+relPrepList.get(i)+">";
 	        	    		   obj1 = "<"+objSupportList.get(j)+">.";
 	        	    		   String sparql = "select ?x where { "+"?x  " +rel1+"  "+obj1+"  }";
@@ -294,21 +323,18 @@ public class sparqlqueryAction extends ActionSupport {
 	        	       
 	       }else{
 	    	   double alpha;
-		       double max = 0.4,min = 0.3;
-		       Random random = new Random();
-		       alpha = random.nextDouble()%(max-min) + min;
+		   double max = 0.4,min = 0.3;
+		   Random random = new Random();
+		   alpha = random.nextDouble()%(max-min) + min;
 	      for(int i0 = 0;i0<supportSize;i0++){
 	    	  subCandi = subEntityList.get(i0);
 	    	  relCandi = relationList.get(i0);
 	    	  objCandi = objEntityList.get(i0);
-	    	  
-		       
-		       
 	    	  String tmp  = relCandi;
 	    	  if(relCandi.charAt(relCandi.length()-3)=='_'){
 	       		relCandi = relCandi.substring(0,relCandi.length()-3);
 	       		lemma = lemmatization(relCandi);
-	       	   System.out.println(relCandi);
+	       	   	System.out.println(relCandi);
 	       		getSynonyms(dict,lemma,2); //testing
 	       		getHypernyms(dict);//testing
 	       		String rel;
@@ -577,10 +603,10 @@ public class sparqlqueryAction extends ActionSupport {
 		}
 		return ss;
 	}
-	    //���
+	
 	    private void getHypernyms(IDictionary dict){
 	    	 
-	        //��ȡָ����synset
+	        //get synset
 	        IIndexWord idxWord = dict.getIndexWord("article", POS.NOUN);//获取article的IndexWord
 	        IWordID wordID = idxWord.getWordIDs().get(0); //取出第一个词义的词的ID号
 	        IWord word = dict.getWord(wordID); //获取词
