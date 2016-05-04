@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -102,8 +103,8 @@ public class sparqlqueryAction extends ActionSupport {
 	TreeMap<String,Double> sorted_map = new TreeMap<String,Double>(bvc);  
 
 	public String execute(){
-		System.out.println(queryType);
-		System.out.print(sparqlString);
+		System.out.println("查询类型"+queryType);
+		System.out.print("查询语句"+sparqlString);
 		init();
 		if(queryType ==1) {
 		try{
@@ -129,12 +130,17 @@ public class sparqlqueryAction extends ActionSupport {
 								String sparql = sparqlString;
 								String queryanswer = gc.query(sparql);
 								System.out.println(queryanswer);
-								String[] array= new String[10];
-								array=queryanswer.split("\\?x");
-								answerNumber = array[0];
-								answer = array[1];
-								System.out.print(answerNumber);
-								System.out.print(answer);
+								if(queryanswer.charAt(0)!='['){
+									String[] array= new String[10];
+									array=queryanswer.split("\\?x");
+									answerNumber = array[0];
+									answer = array[1];
+									System.out.print(answerNumber);
+									System.out.print(answer);
+								}else{
+									answer = "[empty result]";
+									answerNumber = "0";
+								}
 								// unload this database.
 								gc.unload("LUBM10.db");
 								ret = SUCCESS;
@@ -219,7 +225,8 @@ public class sparqlqueryAction extends ActionSupport {
 	        			relPrepList.add(rel);
 	        		}
 	        	}
-	     	  System.out.println(lemma+""+relSupportList.get(0));
+	     	 System.out.println(relPrepList);
+	     	 System.out.println(lemma+""+relSupportList.get(0));
 	     	 System.out.println("wocao");
 	     	  for(int index = 0;index<relSupportList.size();index++){
 	     		  double score = getSimilarity(lemma,relSupportList.get(index))*Math.pow(0.9, index);
@@ -233,9 +240,10 @@ public class sparqlqueryAction extends ActionSupport {
 	        	     getHypernyms(dict);//testing
 	        	     for(int index = 0;index<objSupportList.size();index++){
 	   	     		  double score = getSimilarity(objEntityList.get(0),objSupportList.get(index))*Math.pow(0.9, index);
-	   	     		System.out.print(score);
+	   	     		System.out.println(score);
 	   	     		  objScore.add(score);   	     		
 	   	     	  }
+	        	     System.out.println(objScore);
 	        	  //  ArrayList<String> sparqlList = new ArrayList<String>();
 	        	       int relLen = relPrepList.size();
 	        	       int objLen = objSupportList.size();
@@ -257,15 +265,32 @@ public class sparqlqueryAction extends ActionSupport {
 	        	    	   }
 	        	       }
 	        	       sorted_map.putAll(scoreOfsparql);  
+	        	       System.out.println( sorted_map);
+	        	       System.out.println( sparqlScore);
+	        	       Map<String, Double> map1 =new HashMap<String, Double>();
+	        		      int mapSize=0;
+	        		      if(sorted_map.size()>3){
+	        		    	  for (Map.Entry<String, Double> entry : sorted_map.entrySet()) {
+	        			    	  mapSize++;
+	        			           System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+	        			           if(mapSize>3)
+	        		    			   break;
+	        		               map1.put(entry.getKey() , entry.getValue() );
+	        			          }
+	        		    	  sorted_map.clear();
+		        		      sorted_map.putAll(map1);
+	        		      }
+	        		     
 	        	      /* for(java.util.Iterator<String> k = sparqlList.iterator();k.hasNext(); ){
 	        	        	String str = k.next();
 	        	        	System.out.println(str);
 	        	     }
+	        	  
 	        	       for(java.util.Iterator<Double> k = sparqlScore.iterator();k.hasNext(); ){
 	        	        	double str = k.next();
 	        	        	System.out.println(str);
 	        	     }*/
-	        	       System.out.println( sorted_map);
+		        	       System.out.println( sorted_map);
 	        	       
 	       }else{
 	    	   double alpha;
@@ -366,6 +391,31 @@ public class sparqlqueryAction extends ActionSupport {
 	    	  }
 	      }
 	      sorted_map.putAll(scoreOfsparql);  
+	      Map<String, Double> map1 =new HashMap<String, Double>();
+	      int mapSize=0;
+	      if(sorted_map.size()>3){
+	    	  for (Map.Entry<String, Double> entry : sorted_map.entrySet()) {
+		    	  mapSize++;
+		           System.out.println("key= " + entry.getKey() + " and value= " + entry.getValue());
+		           if(mapSize>3)
+	    			   break;
+	               map1.put(entry.getKey() , entry.getValue() );
+		          }
+	    	  sorted_map.clear();
+		      sorted_map.putAll(map1);
+	      }
+	      
+	    /*  Map<String, Double> map1 =new HashMap<String, Double>();
+	      int mapSize=0;
+	       if(sorted_map.size()>3){
+	    	   for (String key : sorted_map.keySet()) {
+	    		   mapSize++;
+	    		   if(mapSize>3)
+	    			   break;
+	               map1.put(key, sorted_map.get(key));
+	              }
+	       }
+	      sorted_map.putAll(map1);*/
 	      System.out.println(sorted_map);
 	       }
 	}

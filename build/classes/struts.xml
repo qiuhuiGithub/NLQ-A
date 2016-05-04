@@ -1,21 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
-	<!-- <package name="userAction" namespace="/" extends="struts-default">
-	<action name="regist" class="userAction.RegistAction" method="execute">
-	<result name="success">/registsuccess.jsp</result>
-	<result name="error">/registerror.jsp</result>
-	</action>
-	
-	<action name="login" class="userAction.LoginAction" method="execute">
-	<result name="success">/main.jsp</result>
-	<result name="error">/error.jsp</result>
-	</action>
-	<action name="info" class="userAction.UserinfoAction" method="execute">
-	<result name="success">/userinfo.jsp</result>
-	<result name="error">/infoerror.jsp</result>
-	</action>
-	</package> -->
 	<package name="sparqlqueryAction " namespace="/" extends="struts-default">
 	<action name = "sparql"  class = "sparqlqueryAction.sparqlqueryAction" method = "execute">
 	<result name = "success">/queryresult.jsp</result>

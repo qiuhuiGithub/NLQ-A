@@ -62,7 +62,7 @@ sparql语句：<s:property value="sparqlString" />
 		</tr>
 		<s:iterator value="sorted_map" id="column">
 			<tr>
-				<td><s:property value="key" />&nbsp;&nbsp;&nbsp;<s:property value="value" /></td>
+				<td><s:property value="key" />&nbsp;&nbsp;&nbsp;<s:property value="value" />&nbsp;&nbsp;&nbsp;<a href="sparql.action?queryType=1&sparqlString=${key}">查询</a></td>
 			</tr>
 	   </s:iterator>
 </table>
