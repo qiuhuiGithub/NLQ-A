@@ -2,11 +2,21 @@
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
 <struts>
 	<package name="sparqlqueryAction " namespace="/" extends="struts-default">
-	<action name = "sparql"  class = "sparqlqueryAction.sparqlqueryAction" method = "execute">
-	<result name = "success">/queryresult.jsp</result>
-	<result name  = "error">/queryerror.jsp</result>
-	<result name = "transuccess">/sparqlresult.jsp</result>
-	<result name  = "tranerror">/sparqlerror.jsp</result>
-	</action>
+
+		<action name="sparql" class="sparqlqueryAction.sparqlqueryAction"
+			method="execute">
+			<result name="success">/queryresult.jsp</result>
+			<result name="error">/queryerror.jsp</result>
+			<result name="transuccess">/sparqlresult.jsp</result>
+			<result name="tranerror">/sparqlerror.jsp</result>
+			<result name="stringrel">/stringrel.jsp</result>
+		</action>
+
+		<action name="general" class="sparqlqueryAction.generalsparqlAction"
+			method="execute">
+			<result name="sparql">/keywordsparql.jsp</result>
+			<result name="inputempty">/inputempty.jsp</result>
+			<result name="error">/sparqlerror.jsp</result>
+		</action>
 	</package>
 </struts>    

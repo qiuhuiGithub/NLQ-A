@@ -7,7 +7,8 @@
 <title>Query Error</title>
 </head>
 <body>
-	查询失败！
+	输入为空，请选择候选关系。
+	<br>
 	<a href="homepage.jsp">返回主页</a>
 </body>
 </html>

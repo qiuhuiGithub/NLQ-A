@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <%@taglib uri="/struts-tags" prefix="s"%>
-    <%
+	pageEncoding="UTF-8"%>
+<%@taglib uri="/struts-tags" prefix="s"%>
+<%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
@@ -14,7 +14,7 @@
 <title>Query Result</title>
 </head>
 <body>
-<table align="center" border="1" style="width:100%;">
+	<table align="center" border="1" style="width: 100%;">
 		<tr>
 			<th colspan="11" align="center">result</th>
 		</tr>
@@ -24,7 +24,7 @@
 		<tr>
 			<td><s:property value="answer" /></td>
 		</tr>
-</table>
-<a href="homepage.jsp">返回主页</a>
+	</table>
+	<a href="homepage.jsp">返回主页</a>
 </body>
 </html>
