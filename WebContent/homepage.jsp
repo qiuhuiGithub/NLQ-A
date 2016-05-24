@@ -160,6 +160,14 @@ body {
 				<td border="1"><input type="submit" name="submit"
 					value="gStore一下" style="height: 40px;""></td>
 			</tr>
+			<tr>
+				<td align="left">请选择知识库:<select name="choosedOntology"
+					style="width: 70px; height: 17px;">
+						<option value="LUBM">LUBM</option>
+						<option value="Freebase">Freebase</option>
+						<option value="Yago">Yago</option>
+				</select></td>
+			</tr>
 		</table>
 	</form>
 	<br>

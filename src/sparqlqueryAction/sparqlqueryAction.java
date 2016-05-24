@@ -65,7 +65,7 @@ import gdatastructure.Graph;
 public class sparqlqueryAction extends ActionSupport {
 	private static String dir = "/usr/local/WordNet-3.0";
 	private static JWS ws = new JWS(dir, "3.0");
-
+	private static String choosedOntology;
 	private static int tdlSize = 0;
 	private static int i1 = 0;
 	private static boolean turnFlag = false;
@@ -99,30 +99,34 @@ public class sparqlqueryAction extends ActionSupport {
 	private Map<String, List<String>> stringRel = new HashMap<String, List<String>>();
 
 	public String execute() {
+		System.out.println("选择知识库" + choosedOntology);
 		System.out.println("查询类型" + queryType);
 		System.out.println("查询语句" + sparqlString);
 		init();
+		// initialize the GStore server's IP address and port.
+		GstoreConnector gc = new GstoreConnector("127.0.0.1", 3305);
+
+		// build a new database by a RDF file.
+		// note that the relative path is related to gserver.
+		if (choosedOntology.equals("LUBM")) {
+			gc.build("LUBM10.db", "data/LUBM_10.n3");
+		} else if (choosedOntology.equals("Freebase")) {
+			gc.build("LUBM10.db", "data/LUBM_10.n3");
+		} else if (choosedOntology.equals("Yago")) {
+			gc.build("LUBM10.db", "data/LUBM_10.n3");
+		}
+
+		// then you can execute SPARQL query on this database.
+		/*
+		 * String sparql = "select ?x where " + "{" +
+		 * "?x    <rdf:type>    <ub:UndergraduateStudent>. " +
+		 * "?y    <ub:name> <Course1>. " + "?x    <ub:takesCourse>  ?y. " +
+		 * "?z    <ub:teacherOf>    ?y. " + "?z    <ub:name> <FullProfessor1>. "
+		 * + "?z    <ub:worksFor>    ?w. " +
+		 * "?w    <ub:name>    <Department0>. " + "}";
+		 */
 		if (queryType == 1) {
 			try {
-				// if(queryType ==1){
-				// initialize the GStore server's IP address and port.
-				GstoreConnector gc = new GstoreConnector("127.0.0.1", 3305);
-
-				// build a new database by a RDF file.
-				// note that the relative path is related to gserver.
-				gc.build("LUBM10.db", "data/LUBM_10.n3");
-
-				// then you can execute SPARQL query on this database.
-				/*
-				 * String sparql = "select ?x where " + "{" +
-				 * "?x    <rdf:type>    <ub:UndergraduateStudent>. " +
-				 * "?y    <ub:name> <Course1>. " +
-				 * "?x    <ub:takesCourse>  ?y. " +
-				 * "?z    <ub:teacherOf>    ?y. " +
-				 * "?z    <ub:name> <FullProfessor1>. " +
-				 * "?z    <ub:worksFor>    ?w. " +
-				 * "?w    <ub:name>    <Department0>. " + "}";
-				 */
 				String sparql = sparqlString;
 				String queryanswer = gc.query(sparql);
 				System.out.println(queryanswer);
@@ -137,8 +141,6 @@ public class sparqlqueryAction extends ActionSupport {
 					answer = "[empty result]";
 					answerNumber = "0";
 				}
-				// unload this database.
-				gc.unload("LUBM10.db");
 				ret = SUCCESS;
 				// }
 			} catch (Exception e) {
@@ -180,6 +182,8 @@ public class sparqlqueryAction extends ActionSupport {
 				ret = "error";
 			}
 		}
+		// unload this database.
+		gc.unload("LUBM10.db");
 		return ret;
 	}
 
@@ -1105,6 +1109,14 @@ public class sparqlqueryAction extends ActionSupport {
 
 	public void setStringRel(Map<String, List<String>> stringRel) {
 		this.stringRel = stringRel;
+	}
+
+	public static String getChoosedOntology() {
+		return choosedOntology;
+	}
+
+	public static void setChoosedOntology(String choosedOntology) {
+		sparqlqueryAction.choosedOntology = choosedOntology;
 	}
 
 }
