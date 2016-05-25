@@ -35,10 +35,10 @@ actor	 play_in	 Philadelphia
 宾语支持集	actor, histrion, player, Philadelphia, City_of_Brotherly_Love,<br>
 sparql语句列表<br>
 select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>actor>. ?y <<result>ub:playIn> <<result>Philadelphia>. }     2.0   
-select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>actor>. ?y <<result>ub:playIn> <<result>City_of_Brotherly_Love>. }   1.966489037541269       
-select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>histrion>. ?y <<result>ub:playIn> <<result>Philadelphia>. }      1.9391256071073855   
-select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>histrion>. ?y <<result>ub:playIn> <<result>City_of_Brotherly_Love>. }    1.936329171328411   
-select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>player>. ?y <<result>ub:playIn> <<result>Philadelphia>. } </br>   1.933510962458731   
+select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>actor>. ?y <<result>ub:playIn> <<result>City_of_Brotherly_Love>. }   1.9664890375          
+select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>histrion>. ?y <<result>ub:playIn> <<result>Philadelphia>. }      1.9391256071     
+select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>histrion>. ?y <<result>ub:playIn> <<result>City_of_Brotherly_Love>. }    1.9363291713      
+select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>player>. ?y <<result>ub:playIn> <<result>Philadelphia>. }    1.9335109624      </br>  
 2.3关键词查询>
 
 实现关键词查询是一个交互的过程。我们首先需要选择一个本体作为关系挖掘的本体，根据用户输入的关键词，找出用户最可能希望表达的一些关系，然后用户针对每一个关键词选择对应的关系，根据用户的选择，得到候选实体和关系。然后进行消歧、构建形式化查询语言SPARQL和实现排序，返回分数最高的那几个SPARQL语句。   
@@ -46,3 +46,6 @@ select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>play
     China:capitalOf、establish、majorOf   
     North:liveIn、locationIn、love   
 然后用户选择自己希望表达的关系：capitalOf、LocationIn。根据用户的选择，我们构建形式化的查询语言SPARQL，得到的结果如下：   
+select ?x where{ ?x <ub:locationIn> <North>. ?x <ub:capitalOf> <China>. } 2.0   
+select ?x where{ ?x <ub:locationIn> <North>. ?x <ub:capitalOf> <People\'s_Republic_of_China>. }   1.9337241631   
+select ?x where{ ?x <ub:locationIn> <North>. ?x <ub:capitalOf> <mainland_China>. }   1.8740759099   </br>
