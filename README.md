@@ -47,5 +47,5 @@ select ?x where{ ?x <<result>ub:marryTo> ?y. ?y <<result>rdf:type> <<result>play
     North:liveIn、locationIn、love   
 然后用户选择自己希望表达的关系：capitalOf、LocationIn。根据用户的选择，我们构建形式化的查询语言SPARQL，得到的结果如下：   
 select ?x where{ ?x \<ub:locationIn\> \<North\>. ?x \<ub:capitalOf\> \<China\>. } 2.0   
-select ?x where{ ?x \<ub:locationIn\> \<North\>. ?x \<ub:capitalOf\> \<People\'s_Republic_of_China\>. }   1.9337241631   
+select ?x where{ ?x \<ub:locationIn\> \<North\>. ?x \<ub:capitalOf\> \<People's_Republic_of_China\>. }   1.9337241631   
 select ?x where{ ?x \<ub:locationIn\> \<North\>. ?x \<ub:capitalOf\> \<mainland_China\>. }   1.8740759099   </br>
