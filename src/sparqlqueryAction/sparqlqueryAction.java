@@ -65,7 +65,7 @@ import gdatastructure.Graph;
 public class sparqlqueryAction extends ActionSupport {
 	private static String dir = "/usr/local/WordNet-3.0";
 	private static JWS ws = new JWS(dir, "3.0");
-	private static String choosedOntology;
+
 	private static int tdlSize = 0;
 	private static int i1 = 0;
 	private static boolean turnFlag = false;
@@ -85,7 +85,9 @@ public class sparqlqueryAction extends ActionSupport {
 	private List<MyTriples> tripleList = new ArrayList<MyTriples>();
 	private String ret = ERROR;// query error;
 	public static String sparqlString;
+	public String choosedOntology;
 	private int queryType;
+	public int isBuild = 0;
 	private String answer;
 	private String answerNumber;
 
@@ -99,7 +101,7 @@ public class sparqlqueryAction extends ActionSupport {
 	private Map<String, List<String>> stringRel = new HashMap<String, List<String>>();
 
 	public String execute() {
-		System.out.println("选择知识库" + choosedOntology);
+
 		System.out.println("查询类型" + queryType);
 		System.out.println("查询语句" + sparqlString);
 		init();
@@ -108,14 +110,16 @@ public class sparqlqueryAction extends ActionSupport {
 
 		// build a new database by a RDF file.
 		// note that the relative path is related to gserver.
-		if (choosedOntology.equals("LUBM")) {
-			gc.build("LUBM10.db", "data/LUBM_10.n3");
-		} else if (choosedOntology.equals("Freebase")) {
-			gc.build("LUBM10.db", "data/LUBM_10.n3");
-		} else if (choosedOntology.equals("Yago")) {
-			gc.build("LUBM10.db", "data/LUBM_10.n3");
+		if (isBuild == 1) {
+			System.out.println("选择知识库" + choosedOntology);
+			if (choosedOntology.equals("LUBM")) {
+				gc.build("LUBM10.db", "data/LUBM_10.n3");
+			} else if (choosedOntology.equals("Freebase")) {
+				gc.build("LUBM10.db", "data/LUBM_10.n3");
+			} else if (choosedOntology.equals("Yago")) {
+				gc.build("LUBM10.db", "data/LUBM_10.n3");
+			}
 		}
-
 		// then you can execute SPARQL query on this database.
 		/*
 		 * String sparql = "select ?x where " + "{" +
@@ -182,8 +186,10 @@ public class sparqlqueryAction extends ActionSupport {
 				ret = "error";
 			}
 		}
-		// unload this database.
-		gc.unload("LUBM10.db");
+		/*if (isBuild == 1) {
+			// unload this database.
+			gc.unload("LUBM10.db");
+		}*/
 		return ret;
 	}
 
@@ -1111,12 +1117,12 @@ public class sparqlqueryAction extends ActionSupport {
 		this.stringRel = stringRel;
 	}
 
-	public static String getChoosedOntology() {
+	public String getChoosedOntology() {
 		return choosedOntology;
 	}
 
-	public static void setChoosedOntology(String choosedOntology) {
-		sparqlqueryAction.choosedOntology = choosedOntology;
+	public void setChoosedOntology(String choosedOntology) {
+		this.choosedOntology = choosedOntology;
 	}
 
 }

@@ -8,6 +8,8 @@
 %>
 <%
 	Map<String, List<String>> map = new HashMap<String, List<String>>();
+	/* String choosedOntology = (String) request
+			.getAttribute("choosedOntology"); */
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -41,7 +43,7 @@
 			<tr>
 				<td><s:property value="key" />&nbsp;&nbsp;&nbsp;<s:property
 						value="value" />&nbsp;&nbsp;&nbsp;<a
-					href="sparql.action?queryType=1&sparqlString=${key}">查询</a></td>
+					href="sparql.action?queryType=1&sparqlString=${key}>">查询</a></td>
 			</tr>
 		</s:iterator>
 	</table>

@@ -155,18 +155,19 @@ body {
 		<br>
 		<table align="center">
 			<tr>
-				<td><input type="text" name="sparqlString" maxlength="1000"
-					style="width: 700px; height: 40px;"></td>
-				<td border="1"><input type="submit" name="submit"
-					value="gStore一下" style="height: 40px;""></td>
-			</tr>
-			<tr>
 				<td align="left">请选择知识库:<select name="choosedOntology"
 					style="width: 70px; height: 17px;">
 						<option value="LUBM">LUBM</option>
 						<option value="Freebase">Freebase</option>
 						<option value="Yago">Yago</option>
 				</select></td>
+			</tr>
+			<tr>
+				<td><input type="text" name="sparqlString" maxlength="1000"
+					style="width: 700px; height: 40px;"></td>
+				<td border="1"><input type="submit" name="submit"
+					value="gStore一下" style="height: 40px;""></td>
+					<td><input type = "hidden" name = "isBuild" value = "1"></td>
 			</tr>
 		</table>
 	</form>

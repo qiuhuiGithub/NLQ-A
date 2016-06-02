@@ -22,6 +22,7 @@ import edu.mit.jwi.item.POS;
 @SuppressWarnings("serial")
 public class generalsparqlAction extends ActionSupport {
 	public static int flag = 0;
+	public String choosedOntology;
 	public static String prep1 = "";
 	private String ret = ERROR;// query error;
 	private String sparqlString;
@@ -292,6 +293,14 @@ public class generalsparqlAction extends ActionSupport {
 
 	public void setStringRel(Map<String, String> stringRel) {
 		this.stringRel = stringRel;
+	}
+
+	public String getChoosedOntology() {
+		return choosedOntology;
+	}
+
+	public void setChoosedOntology(String choosedOntology) {
+		this.choosedOntology = choosedOntology;
 	}
 
 }

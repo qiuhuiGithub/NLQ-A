@@ -8,6 +8,8 @@
 %>
 <%
 	Map<String, List<String>> map = new HashMap<String, List<String>>();
+	/* String  choosedOntology = (String)request.getAttribute("choosedOntology");
+	out.print(choosedOntology); */
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -38,6 +40,7 @@
 				</table>
 			</s:iterator>
 			<tr>
+			<%-- <td><input type = "hidden" name = "choosedOntology" value  =<%=choosedOntology %>></td> --%>
 				<td><input type="submit" name="submit" value="提交"></td>
 			</tr>
 		</table>
